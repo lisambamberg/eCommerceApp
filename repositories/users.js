@@ -51,12 +51,22 @@ class UsersRepository {
     const filteredRecords = records.filter((record) => record.id == !id);
     await this.writeAll(filteredRecords);
   }
+
+  async update(id, attributes) {
+    const records = await this.getAll();
+    const record = records.find((record) => record.id === id);
+
+    if (!record) {
+      throw new Error(`Record with id ${id} not found`);
+    }
+
+    Object.assign(record, attributes);
+    await this.writeAll(records);
+  }
 }
 
 const test = async () => {
   const repo = new UsersRepository("users.json");
-
-  await repo.delete("");
 };
 
 test();
