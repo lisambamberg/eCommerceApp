@@ -83,8 +83,4 @@ class UsersRepository {
   }
 }
 
-const test = async () => {
-  const repo = new UsersRepository("users.json");
-};
-
-test();
+module.exports = new UsersRepository('users.json');
