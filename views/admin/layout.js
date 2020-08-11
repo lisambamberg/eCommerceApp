@@ -1,5 +1,5 @@
 module.exports = ({content}) => {
-    return`
+    return `
     <!DOCTYPE html>
     <html>
     <head>
