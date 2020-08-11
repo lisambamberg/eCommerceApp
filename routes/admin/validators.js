@@ -1,5 +1,5 @@
 const { check } = require("express-validator");
-const usersRepo = require("../../repositories");
+const usersRepo = require("../../repositories/users");
 
 module.exports = {
   requireEmail: check("email")
@@ -27,5 +27,5 @@ module.exports = {
       if (passwordConfirmation !== req.body.password) {
         throw new Error("Passwords must match");
       }
-    }),
+    })
 };
