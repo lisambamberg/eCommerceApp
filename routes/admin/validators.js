@@ -46,6 +46,17 @@ module.exports = {
         throw new Error("Email not found!");
       }
     }),
+    
+    requireImage: check('image').custom((image, { req }) => {
+      const file = req.file;
+      if (!file) {
+          throw new Error('Please upload file');
+      }
+      return (req, res, next) => {
+          next();
+      };
+  }),
+
   requireValidPasswordForUser: check("password")
     .trim()
     .custom(async (password, { req }) => {
