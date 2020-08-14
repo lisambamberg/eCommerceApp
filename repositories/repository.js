@@ -15,47 +15,22 @@ module.exports = class Repository {
     }
   }
 
-async create(attributes) {
-    attributes.id = this.randomId();
+  async create(attrs) {
+    attrs.id = this.randomId();
 
     const records = await this.getAll();
-    records.push(attributes);
+    records.push(attrs);
     await this.writeAll(records);
 
-    return attributes;
-}
+    return attrs;
+  }
 
   async getAll() {
     return JSON.parse(
       await fs.promises.readFile(this.filename, {
-        encoding: "utf-8",
+        encoding: "utf8",
       })
     );
-  }
-
-  async create(attributes) {
-    attributes.id = this.randomId();
-
-    const salt = crypto.randomBytes(8).toString("hex");
-    const buffer = await scrypt(attributes.password, salt, 64);
-
-    const records = await this.getAll();
-    const record = {
-      ...attributes,
-      password: `${buffer.toString("hex")}.${salt}`,
-    };
-    records.push(record);
-
-    await this.writeAll(records);
-
-    return record;
-  }
-
-  async comparePasswords(saved, supplied) {
-    const [hashed, salt] = saved.split(".");
-    const hashedSuppliedBuffer = await scrypt(supplied, salt, 64);
-
-    return hashed === hashedSuppliedBuffer.toString("hex");
   }
 
   async writeAll(records) {
@@ -76,11 +51,11 @@ async create(attributes) {
 
   async delete(id) {
     const records = await this.getAll();
-    const filteredRecords = records.filter((record) => record.id == !id);
+    const filteredRecords = records.filter((record) => record.id !== id);
     await this.writeAll(filteredRecords);
   }
 
-  async update(id, attributes) {
+  async update(id, attrs) {
     const records = await this.getAll();
     const record = records.find((record) => record.id === id);
 
@@ -88,7 +63,7 @@ async create(attributes) {
       throw new Error(`Record with id ${id} not found`);
     }
 
-    Object.assign(record, attributes);
+    Object.assign(record, attrs);
     await this.writeAll(records);
   }
 
