@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator');
+const { validationResult } = require("express-validator");
 
 module.exports = {
   handleErrors(templateFunc) {
@@ -11,5 +11,5 @@ module.exports = {
 
       next();
     };
-  }
+  },
 };
